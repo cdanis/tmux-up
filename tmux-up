@@ -3,7 +3,7 @@
 TMUX_UP=tmux-up
 VERSION=0.5.1
 
-if [ $# -ne 1 ] && [ ! -f '.tmux.conf' ]
+if [ $# -ne 1 ] && [ ! -f "$HOME/.tmux-up.rc" ]
 then
   echo "$0: missing file operand"
   echo "Try '$0 --help' for more information."
@@ -18,7 +18,7 @@ then
 
 		The FILE argument is used to bootstrap the new tmux session if it doesn't
 		already exist. It must contain tmux-compatible commands, which will be
-		passed to tmux. Defaults to: .tmux.conf
+		passed to tmux. Defaults to: $HOME/.tmux-up.rc
 
 		  --help     display this help and exit
 		  --version  output version information and exit
@@ -38,7 +38,7 @@ then
   exit 0
 fi
 
-FILE=${1:-.tmux.conf}
+FILE=${1:-"$HOME/.tmux-up.rc"}
 
 if [ ! -f "$FILE" ]
 then
@@ -47,9 +47,9 @@ then
 fi
 
 BASE=$(basename "$PWD" | sed 's/[^a-zA-Z0-9\-]//g')
-NAME=$(basename "$FILE" .conf)
+NAME=$(basename "$FILE" .rc)
 
-if [ "$NAME" = 'tmux' ] || [ "$NAME" = '.tmux' ]
+if [ "$NAME" = 'tmux-up' ] || [ "$NAME" = '.tmux-up' ]
 then
   SESSION=$BASE
 else
